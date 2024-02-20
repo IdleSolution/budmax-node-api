@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",                                  
+    "esModuleInterop": true,                             
+    "forceConsistentCasingInFileNames": true,           
+    "strict": true,
+    "skipLibCheck": true,
+  }                          
+}
