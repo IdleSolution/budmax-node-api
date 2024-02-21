@@ -12,3 +12,6 @@ export const DB = {
     NAME: process.env.DB_NAME ?? 'conduit',
     PORT: process.env.DB_PORT ?? 27017,
 }
+export const JWT_SECRET = process.env.JWT_SECRET!;
+export const ADMIN_USERNAME = process.env.ADMIN_USERNAME!;
+export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;

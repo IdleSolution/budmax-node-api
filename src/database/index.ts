@@ -1,13 +1,12 @@
 import mongoose from 'mongoose';
 import logger from "../utilities/logger";
-import { DB } from "../utilities/secrets";
+import { ADMIN_PASSWORD, ADMIN_USERNAME, DB } from "../utilities/secrets";
+import { Admin } from './models/admin.model';
+import bcrypt from 'bcrypt';
 
 const dbURI = `mongodb://${DB.HOST}:${DB.PORT}/${
   DB.NAME
 }`;
-
-console.log(dbURI);
-
 
 const options = {
   autoIndex         : true,
@@ -26,6 +25,19 @@ mongoose
     logger.info('Mongoose connection error');
     logger.error(e);
   });
+
+mongoose.connection.once('open', async () => {
+    const admin = await Admin.findOne({username: ADMIN_USERNAME});
+
+    if(!admin) {
+      const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, 10);
+      const admin = new Admin({
+        username: ADMIN_USERNAME,
+        password: hashedPassword,
+      })
+      await admin.save();
+    }
+});
 
 
 mongoose.connection.on('connected', () => {

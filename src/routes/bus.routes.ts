@@ -3,12 +3,14 @@ import { BusCreationInterface } from '../interfaces/bus.interface';
 import { Bus } from '../database/models/bus.model';
 import schemaValidator from '../middlewares/schema-validator.middleware';
 import { BUS_CREATION_SCHEMA } from '../schemas';
+import { verifyToken } from '../middlewares/verify-jwt-token.middleware';
 
 const router: Router = Router();
 
 router.post(
     '/', 
-    schemaValidator(BUS_CREATION_SCHEMA), 
+    schemaValidator(BUS_CREATION_SCHEMA),
+    verifyToken,
     async (req: Request<{}, {}, BusCreationInterface>, res: Response) => {
         const newBus = req.body;
 
@@ -20,7 +22,7 @@ router.post(
         });
 
         const savedBus = await bus.save();
-        return res.json({bus: savedBus.toJsonFor()});
+        return res.json({ bus: savedBus.toJsonFor() });
     }
 )
 
