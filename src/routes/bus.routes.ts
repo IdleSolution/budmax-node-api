@@ -20,7 +20,11 @@ router.post(
     async (req: Request<{}, {}, BusCreationInterface>, res: Response) => {
         const newBus = req.body;
 
-        const image = await uploadImage(req.file!.buffer);
+        let image;
+
+        if(req.file) {
+            image = await uploadImage(req.file!.buffer);
+        }
 
         const bus = new Bus({
             model: newBus.model,
