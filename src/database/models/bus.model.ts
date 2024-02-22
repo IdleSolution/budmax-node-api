@@ -29,6 +29,7 @@ BusSchema.methods.toJsonFor = function () {
         engineCapacity: this.engineCapacity,
         pricePerDay: this.pricePerDay,
         power: this.power,
+        imageUrl: this.imageUrl,
     }
 }
 

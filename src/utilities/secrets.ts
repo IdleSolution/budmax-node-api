@@ -15,3 +15,6 @@ export const DB = {
 export const JWT_SECRET = process.env.JWT_SECRET!;
 export const ADMIN_USERNAME = process.env.ADMIN_USERNAME!;
 export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
+export const CLOUDINARY_NAME = process.env.CLOUDINARY_NAME!;
+export const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY!;
+export const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET!;

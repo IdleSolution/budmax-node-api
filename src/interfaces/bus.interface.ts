@@ -3,6 +3,7 @@ export interface IBus {
     engineCapacity: number,
     pricePerDay: number,
     power: number,
+    imageUrl: string;
 }
 
 export interface BusCreationInterface {
