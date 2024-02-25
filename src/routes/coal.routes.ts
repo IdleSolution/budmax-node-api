@@ -4,8 +4,9 @@ import { COAL_CREATION_SCHEMA } from '../schemas';
 import { verifyToken } from '../middlewares/verify-jwt-token.middleware';
 import multer from 'multer';
 import { uploadImage } from '../utilities/upload-image';
-import { CoalType, ICoal, ICoalListQueryParams } from '../interfaces/coal.interface';
+import { ICoal, ICoalListQueryParams } from '../interfaces/coal.interface';
 import { Coal } from '../database/models/coal.model';
+import { CoalType } from '../database/enums/coal.enum';
 
 const router: Router = Router();
 

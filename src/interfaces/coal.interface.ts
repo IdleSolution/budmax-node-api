@@ -1,8 +1,4 @@
-export enum CoalType {
-    CUBE = 'cube',
-    WALNUT = 'walnut',
-    ECO_PEA = 'eco pea',
-}
+import { CoalType } from "../database/enums/coal.enum";
 
 export interface ICoal {
     type: CoalType,
