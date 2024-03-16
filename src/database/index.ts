@@ -4,9 +4,7 @@ import { ADMIN_PASSWORD, ADMIN_USERNAME, DB } from "../utilities/secrets";
 import { Admin } from './models/admin.model';
 import bcrypt from 'bcrypt';
 
-const dbURI = `mongodb://${DB.HOST}:${DB.PORT}/${
-  DB.NAME
-}`;
+const dbURI = `mongodb://${DB.USER}:${DB.PASSWORD}@${DB.HOST}:${DB.PORT}/`;
 
 const options = {
   autoIndex         : true,

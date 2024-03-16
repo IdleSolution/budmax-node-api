@@ -42,9 +42,7 @@ router.post(
 router.get(
     '/', 
     async (req: Request, res: Response) => {
-        console.log('inside bus request');
         const buses = await Bus.find();
-        console.log('after bus db request');
 
         return res.json({
             buses: buses.map(bus => bus.toJsonFor()),
