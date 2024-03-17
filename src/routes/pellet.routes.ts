@@ -67,4 +67,19 @@ router.get(
     }
 )
 
+router.delete('/:id', verifyToken, 
+    async (req: Request<{ id: string }>, res: Response) => {
+        const { id } = req.params;
+        const pellet = await Pellet.findById(id);
+
+        if(!pellet) {
+            return res.status(404).json({ error: 'Pellet with given id does not exist.' });
+        }
+
+        await Pellet.deleteOne({ _id: id });
+
+        return res.json({ success: true })
+    }
+)
+
 export const PelletRoutes: Router = router;
