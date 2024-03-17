@@ -4,6 +4,7 @@ import { StoneDeliveryFormEnum } from "./database/enums/stone.enum";
 
 export const BUS_CREATION_SCHEMA = 'busCreationSchema';
 export const COAL_CREATION_SCHEMA = 'coalCreationSchema';
+export const COAL_UPDATE_SCHEMA = 'coalUpdateSchema';
 export const PELLET_CREATION_SCHEMA = 'pelletCreationSchema';
 export const STONE_CREATION_SCHEMA = 'stoneCreationSchema';
 
@@ -20,6 +21,14 @@ const coalCreation = Joi.object().keys({
   calorificValue: Joi.number(),
   granulation: Joi.number(),
   price: Joi.number(),
+});
+
+const coalUpdate = Joi.object().keys({
+  type: Joi.string().valid(...Object.values(CoalType)).optional(),
+  mine: Joi.string().optional(),
+  calorificValue: Joi.number().optional(),
+  granulation: Joi.number().optional(),
+  price: Joi.number().optional(),
 });
 
 const pelletCreation = Joi.object().keys({
@@ -41,4 +50,5 @@ export default {
     [COAL_CREATION_SCHEMA]: coalCreation,
     [PELLET_CREATION_SCHEMA]: pelletCreation,
     [STONE_CREATION_SCHEMA]: stoneCreation,
+    [COAL_UPDATE_SCHEMA]: coalUpdate,
 } as { [key: string]: ObjectSchema };

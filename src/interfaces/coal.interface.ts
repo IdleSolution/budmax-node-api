@@ -12,3 +12,13 @@ export interface ICoal {
 export interface ICoalListQueryParams {
     type: CoalType;
 }
+
+
+export interface ICoalUpdate {
+    type: CoalType,
+    mine: string,
+    calorificValue: number,
+    granulation: number,
+    price: number,
+    image_url: string;
+}

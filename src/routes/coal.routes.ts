@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 import schemaValidator from '../middlewares/schema-validator.middleware';
-import { COAL_CREATION_SCHEMA } from '../schemas';
+import { COAL_CREATION_SCHEMA, COAL_UPDATE_SCHEMA } from '../schemas';
 import { verifyToken } from '../middlewares/verify-jwt-token.middleware';
 import multer from 'multer';
 import { uploadImage } from '../utilities/upload-image';
@@ -65,7 +65,7 @@ router.get(
 router.get(
     '/:id', 
     async (req: Request<{ id: string }>, res: Response) => {
-        const id = req.params.id;
+        const { id } = req.params;
 
         const coal = await Coal.findById(id);
 
@@ -78,5 +78,60 @@ router.get(
         });
     }
 )
+
+router.patch(
+    '/:id',
+    upload.single('image'),
+    schemaValidator(COAL_UPDATE_SCHEMA),
+    verifyToken,
+    async (req: Request<{ id: string }, {}, Partial<ICoal>>, res: Response) => {
+        const updatedCoal = req.body;
+        const { id } = req.params;
+
+        const oldCoal = await Coal.findById(id);
+
+        if(!oldCoal) {
+            return res.status(404).json({ error: 'Coal with given id does not exist.' });
+        }
+
+        let image = undefined;
+
+        if(req.file) {
+            image = await uploadImage(req.file!.buffer);
+        }
+
+        await Coal.updateOne({
+            _id: id
+        }, {
+            type: updatedCoal.type,
+            price: updatedCoal.price,
+            calorificValue: updatedCoal.calorificValue,
+            granulation: updatedCoal.granulation,
+            mine: updatedCoal.mine,
+            image_url: image?.secure_url,
+        })
+
+        const newCoal = await Coal.findById(id);
+
+        return res.json({ bus: newCoal!.toJsonFor() });
+    }
+)
+
+router.delete('/:id', verifyToken, 
+    async (req: Request<{ id: string }>, res: Response) => {
+        const { id } = req.params;
+        const coal = await Coal.findById(id);
+
+        if(!coal) {
+            return res.status(404).json({ error: 'Coal with given id does not exist.' });
+        }
+
+        await Coal.deleteOne({ _id: id });
+
+        return res.json({ success: true })
+    }
+)
+
+
 
 export const CoalRoutes: Router = router;
