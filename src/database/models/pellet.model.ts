@@ -14,6 +14,7 @@ const PelletSchema = new Schema({
 
 PelletSchema.methods.toJsonFor = function () {
     return {
+        id: this._id,
         producent: this.producent,
         certificates: this.certificates,
         price: this.price,
