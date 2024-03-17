@@ -18,17 +18,19 @@ const busCreation = Joi.object().keys({
 const coalCreation = Joi.object().keys({
   type: Joi.string().valid(...Object.values(CoalType)),
   mine: Joi.string(),
-  calorificValue: Joi.number(),
-  granulation: Joi.number(),
-  price: Joi.number(),
+  calorificValue: Joi.string(),
+  granulation: Joi.string(),
+  price: Joi.string(),
+  image: Joi.any()
 });
 
 const coalUpdate = Joi.object().keys({
   type: Joi.string().valid(...Object.values(CoalType)).optional(),
   mine: Joi.string().optional(),
-  calorificValue: Joi.number().optional(),
-  granulation: Joi.number().optional(),
-  price: Joi.number().optional(),
+  calorificValue: Joi.string().optional(),
+  granulation: Joi.string().optional(),
+  price: Joi.string().optional(),
+  image: Joi.any(),
 });
 
 const pelletCreation = Joi.object().keys({

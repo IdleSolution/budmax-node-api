@@ -30,9 +30,9 @@ router.post(
 
         const coal = new Coal({
             type: newCoal.type,
-            price: newCoal.price,
-            calorificValue: newCoal.calorificValue,
-            granulation: newCoal.granulation,
+            price: Number(newCoal.price),
+            calorificValue: Number(newCoal.calorificValue),
+            granulation: Number(newCoal.granulation),
             mine: newCoal.mine,
             image_url: image?.secure_url,
 
@@ -104,9 +104,9 @@ router.patch(
             _id: id
         }, {
             type: updatedCoal.type,
-            price: updatedCoal.price,
-            calorificValue: updatedCoal.calorificValue,
-            granulation: updatedCoal.granulation,
+            price: Number(updatedCoal.price),
+            calorificValue: Number(updatedCoal.calorificValue),
+            granulation: Number(updatedCoal.granulation),
             mine: updatedCoal.mine,
             image_url: image?.secure_url,
         })
