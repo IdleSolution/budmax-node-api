@@ -16,7 +16,7 @@ PelletSchema.methods.toJsonFor = function () {
     return {
         id: this._id,
         producent: this.producent,
-        certificates: this.certificates,
+        certificates: this.certificates.join(', '),
         price: this.price,
         imageUrl: this.imageUrl,
     }
