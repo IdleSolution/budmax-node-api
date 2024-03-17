@@ -15,7 +15,6 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.get('/', (req: Request, res: Response) => {
-    console.log('hello');
     return res.json({ health: 'check' });
 })
 

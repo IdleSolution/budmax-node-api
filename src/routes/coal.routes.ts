@@ -48,11 +48,13 @@ router.get(
     async (req: Request<{}, {}, {}, ICoalListQueryParams>, res: Response) => {
         const type = req.query.type;
 
-        if(!Object.values(CoalType).includes(type as CoalType)) {
+        if(!Object.values(CoalType).includes(type as CoalType) && type !== undefined) {
             return res.status(400).json({ error: 'Invalid type parameter.' })
         }
 
-        const coals = await Coal.find({ type });
+        const searchQuery = type ? { type } : {}
+
+        const coals = await Coal.find(searchQuery);
 
         return res.json({
             coals: coals.map(coal => coal.toJsonFor()),
