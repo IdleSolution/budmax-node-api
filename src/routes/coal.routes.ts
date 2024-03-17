@@ -34,7 +34,7 @@ router.post(
             calorificValue: Number(newCoal.calorificValue),
             granulation: Number(newCoal.granulation),
             mine: newCoal.mine,
-            image_url: image?.secure_url,
+            imageUrl: image?.secure_url,
 
         });
 
