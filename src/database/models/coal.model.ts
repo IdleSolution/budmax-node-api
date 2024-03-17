@@ -23,6 +23,7 @@ CoalSchema.methods.toJsonFor = function () {
         granulation: this.granulation,
         price: this.price,
         imageUrl: this.imageUrl,
+        id: this._id
     }
 }
 

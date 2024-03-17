@@ -62,4 +62,21 @@ router.get(
     }
 )
 
+router.get(
+    '/:id', 
+    async (req: Request<{ id: string }>, res: Response) => {
+        const id = req.params.id;
+
+        const coal = await Coal.findById(id);
+
+        if(!coal) {
+            return res.status(404).json({ error: 'Coal with given id does not exist.' });
+        }
+
+        return res.json({
+            coal: coal.toJsonFor(),
+        });
+    }
+)
+
 export const CoalRoutes: Router = router;
