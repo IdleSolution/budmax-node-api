@@ -39,7 +39,7 @@ router.post(
         });
 
         const savedCoal = await coal.save();
-        return res.json({ bus: savedCoal.toJsonFor() });
+        return res.json({ coal: savedCoal.toJsonFor() });
     }
 )
 
@@ -104,12 +104,12 @@ router.patch(
             _id: id
         }, {
             type: updatedCoal.type,
-            price: Number(updatedCoal.price),
-            calorificValue: Number(updatedCoal.calorificValue),
-            granulation: Number(updatedCoal.granulation),
+            price: updatedCoal.price ? Number(updatedCoal.price) : undefined,
+            calorificValue: updatedCoal.calorificValue ? Number(updatedCoal.calorificValue) : undefined,
+            granulation: updatedCoal.granulation ? Number(updatedCoal.granulation) : undefined,
             mine: updatedCoal.mine,
-            image_url: image?.secure_url,
-        })
+            imageUrl: image?.secure_url,
+        });
 
         const newCoal = await Coal.findById(id);
 
