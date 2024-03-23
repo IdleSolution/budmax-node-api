@@ -29,7 +29,7 @@ router.post(
 
         const pellet = new Pellet({
             price: newPellet.price,
-            image_url: image?.secure_url,
+            imageUrl: image?.secure_url,
             certificates: newPellet.certificates,
             producent: newPellet.producent,
         });
@@ -108,7 +108,7 @@ router.patch(
             _id: id
         }, {
             price: updatePellet.price,
-            image_url: image?.secure_url,
+            imageUrl: image?.secure_url,
             certificates: updatePellet.certificates,
             producent: updatePellet.producent,
         });

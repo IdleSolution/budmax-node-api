@@ -6,7 +6,7 @@ export interface ICoal {
     calorificValue: number,
     granulation: number,
     price: number,
-    image_url: string;
+    imageUrl: string;
 }
 
 export interface ICoalListQueryParams {
@@ -20,5 +20,5 @@ export interface ICoalUpdate {
     calorificValue: number,
     granulation: number,
     price: number,
-    image_url: string;
+    imageUrl: string;
 }

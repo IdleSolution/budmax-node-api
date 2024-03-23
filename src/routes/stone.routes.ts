@@ -31,7 +31,7 @@ router.post(
 
         const stone = new Stone({
             price: newStone.price,
-            image_url: image?.secure_url,
+            imageUrl: image?.secure_url,
             name: newStone.name,
             granulation: newStone.granulation,
             deliveryForm: newStone.deliveryForm,
@@ -110,7 +110,7 @@ router.patch(
             _id: id
         }, {
             price: updatedStone.price,
-            image_url: image?.secure_url,
+            imageUrl: image?.secure_url,
             name: updatedStone.name,
             granulation: updatedStone.granulation,
             deliveryForm: updatedStone.deliveryForm,
