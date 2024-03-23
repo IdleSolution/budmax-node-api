@@ -7,7 +7,7 @@ export default interface IPelletModel extends IPellet, Document {
 
 const PelletSchema = new Schema({
     producent: String,
-    certificates: [String],
+    certificates: String,
     price: Number,
     imageUrl: String,
 });
@@ -16,7 +16,7 @@ PelletSchema.methods.toJsonFor = function () {
     return {
         id: this._id,
         producent: this.producent,
-        certificates: this.certificates.join(', '),
+        certificates: this.certificates,
         price: this.price,
         imageUrl: this.imageUrl,
     }

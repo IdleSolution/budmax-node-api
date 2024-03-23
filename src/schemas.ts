@@ -44,7 +44,7 @@ const coalUpdate = Joi.object().keys({
 });
 
 const pelletCreation = Joi.object().keys({
-  certificates: Joi.array().items(Joi.string()),
+  certificates: Joi.string(),
   producent: Joi.string(),
   price: Joi.number(),
 });
