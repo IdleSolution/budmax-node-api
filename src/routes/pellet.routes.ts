@@ -115,7 +115,7 @@ router.patch(
 
         const newPellet = await Pellet.findById(id);
 
-        return res.json({ bus: newPellet!.toJsonFor() });
+        return res.json({ pellet: newPellet!.toJsonFor() });
     }
 )
 

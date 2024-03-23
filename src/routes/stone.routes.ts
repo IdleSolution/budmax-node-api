@@ -38,7 +38,7 @@ router.post(
         });
 
         const savedStone = await stone.save();
-        return res.json({ bus: savedStone.toJsonFor() });
+        return res.json({ stone: savedStone.toJsonFor() });
     }
 )
 
@@ -48,7 +48,7 @@ router.get(
         const stones = await Stone.find();
 
         return res.json({
-            pellets: stones.map(stone => stone.toJsonFor()),
+            stones: stones.map(stone => stone.toJsonFor()),
         });
     }
 )
