@@ -30,6 +30,7 @@ router.post(
 
         const coal = new Coal({
             type: newCoal.type,
+            name: newCoal.name,
             price: Number(newCoal.price),
             calorificValue: Number(newCoal.calorificValue),
             granulation: Number(newCoal.granulation),
@@ -103,6 +104,7 @@ router.patch(
         await Coal.updateOne({
             _id: id
         }, {
+            name: updatedCoal.name,
             type: updatedCoal.type,
             price: updatedCoal.price ? Number(updatedCoal.price) : undefined,
             calorificValue: updatedCoal.calorificValue ? Number(updatedCoal.calorificValue) : undefined,
