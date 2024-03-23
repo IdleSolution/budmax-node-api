@@ -53,7 +53,7 @@ const pelletCreation = Joi.object().keys({
 });
 
 const pelletUpdate = Joi.object().keys({
-  certificates: Joi.array().items(Joi.string()).optional(),
+  certificates: Joi.string().optional(),
   producent: Joi.string().optional(),
   price: Joi.number().optional(),
   image: Joi.any()
