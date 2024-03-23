@@ -7,6 +7,7 @@ export default interface ICoalModel extends ICoal, Document {
 }
 
 const CoalSchema = new Schema({
+    name: String,
     type: { type: String, enum: CoalType },
     mine: String,
     calorificValue: Number,
@@ -18,6 +19,7 @@ const CoalSchema = new Schema({
 CoalSchema.methods.toJsonFor = function () {
     return {
         id: this._id,
+        name: this.name,
         type: this.type,
         mine: this.mine,
         calorificValue: this.calorificValue,

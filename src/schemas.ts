@@ -28,6 +28,7 @@ const busUpdate = Joi.object().keys({
 });
 
 const coalCreation = Joi.object().keys({
+  name: Joi.string(),
   type: Joi.string().valid(...Object.values(CoalType)),
   mine: Joi.string(),
   calorificValue: Joi.string(),
@@ -37,6 +38,7 @@ const coalCreation = Joi.object().keys({
 });
 
 const coalUpdate = Joi.object().keys({
+  name: Joi.string(),
   type: Joi.string().valid(...Object.values(CoalType)).optional(),
   mine: Joi.string().optional(),
   calorificValue: Joi.string().optional(),
