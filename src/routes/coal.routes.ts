@@ -113,7 +113,7 @@ router.patch(
 
         const newCoal = await Coal.findById(id);
 
-        return res.json({ bus: newCoal!.toJsonFor() });
+        return res.json({ coal: newCoal!.toJsonFor() });
     }
 )
 
