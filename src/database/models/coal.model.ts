@@ -17,13 +17,13 @@ const CoalSchema = new Schema({
 
 CoalSchema.methods.toJsonFor = function () {
     return {
+        id: this._id,
         type: this.type,
         mine: this.mine,
         calorificValue: this.calorificValue,
         granulation: this.granulation,
         price: this.price,
         imageUrl: this.imageUrl,
-        id: this._id
     }
 }
 

@@ -25,6 +25,7 @@ const BusSchema = new Schema({
 
 BusSchema.methods.toJsonFor = function () {
     return {
+        id: this._id,
         model: this.model,
         engineCapacity: this.engineCapacity,
         pricePerDay: this.pricePerDay,

@@ -16,6 +16,7 @@ const StomeSchema = new Schema({
 
 StomeSchema.methods.toJsonFor = function () {
     return {
+        id: this._id,
         name: this.name,
         price: this.price,
         imageUrl: this.imageUrl,
