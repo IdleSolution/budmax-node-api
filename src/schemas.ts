@@ -15,7 +15,8 @@ const busCreation = Joi.object().keys({
   model: Joi.string().required(),
   engineCapacity: Joi.number().required(),
   pricePerDay: Joi.number().required(),
-  power: Joi.number().required()
+  power: Joi.number().required(),
+  image: Joi.any()
 });
 
 const busUpdate = Joi.object().keys({
@@ -23,6 +24,7 @@ const busUpdate = Joi.object().keys({
   engineCapacity: Joi.number().required().optional(),
   pricePerDay: Joi.number().required().optional(),
   power: Joi.number().required().optional(),
+  image: Joi.any()
 });
 
 const coalCreation = Joi.object().keys({
@@ -47,12 +49,14 @@ const pelletCreation = Joi.object().keys({
   certificates: Joi.string(),
   producent: Joi.string(),
   price: Joi.number(),
+  image: Joi.any()
 });
 
 const pelletUpdate = Joi.object().keys({
   certificates: Joi.array().items(Joi.string()).optional(),
   producent: Joi.string().optional(),
   price: Joi.number().optional(),
+  image: Joi.any()
 });
 
 const stoneCreation = Joi.object().keys({
@@ -60,6 +64,7 @@ const stoneCreation = Joi.object().keys({
   price: Joi.number(),
   granulation: Joi.number(),
   deliveryForm: Joi.string().valid(...Object.values(StoneDeliveryFormEnum)),
+  image: Joi.any()
 });
 
 const stoneUpdate = Joi.object().keys({
@@ -67,6 +72,7 @@ const stoneUpdate = Joi.object().keys({
   price: Joi.number().optional(),
   granulation: Joi.number().optional(),
   deliveryForm: Joi.string().valid(...Object.values(StoneDeliveryFormEnum)).optional(),
+  image: Joi.any()
 });
 
 export default {
