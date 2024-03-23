@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 import schemaValidator from '../middlewares/schema-validator.middleware';
-import { PELLET_CREATION_SCHEMA } from '../schemas';
+import { PELLET_CREATION_SCHEMA, PELLET_UPDATE_SCHEMA } from '../schemas';
 import { verifyToken } from '../middlewares/verify-jwt-token.middleware';
 import multer from 'multer';
 import { uploadImage } from '../utilities/upload-image';
@@ -79,6 +79,43 @@ router.delete('/:id', verifyToken,
         await Pellet.deleteOne({ _id: id });
 
         return res.json({ success: true })
+    }
+)
+
+
+router.patch(
+    '/:id',
+    upload.single('image'),
+    schemaValidator(PELLET_UPDATE_SCHEMA),
+    verifyToken,
+    async (req: Request<{ id: string }, {}, Partial<IPellet>>, res: Response) => {
+        const updatePellet = req.body;
+        const { id } = req.params;
+
+        const oldPellet = await Pellet.findById(id);
+
+        if(!oldPellet) {
+            return res.status(404).json({ error: 'Pellet with given id does not exist.' });
+        }
+
+        let image = undefined;
+
+        if(req.file) {
+            image = await uploadImage(req.file!.buffer);
+        }
+
+        await Pellet.updateOne({
+            _id: id
+        }, {
+            price: updatePellet.price,
+            image_url: image?.secure_url,
+            certificates: updatePellet.certificates,
+            producent: updatePellet.producent,
+        });
+
+        const newPellet = await Pellet.findById(id);
+
+        return res.json({ bus: newPellet!.toJsonFor() });
     }
 )
 

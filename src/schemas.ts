@@ -6,6 +6,7 @@ export const BUS_CREATION_SCHEMA = 'busCreationSchema';
 export const COAL_CREATION_SCHEMA = 'coalCreationSchema';
 export const COAL_UPDATE_SCHEMA = 'coalUpdateSchema';
 export const PELLET_CREATION_SCHEMA = 'pelletCreationSchema';
+export const PELLET_UPDATE_SCHEMA = 'pelletUpdateSchema';
 export const STONE_CREATION_SCHEMA = 'stoneCreationSchema';
 
 const busCreation = Joi.object().keys({
@@ -39,6 +40,12 @@ const pelletCreation = Joi.object().keys({
   price: Joi.number(),
 });
 
+const pelletUpdate = Joi.object().keys({
+  certificates: Joi.array().items(Joi.string()).optional(),
+  producent: Joi.string().optional(),
+  price: Joi.number().optional(),
+});
+
 const stoneCreation = Joi.object().keys({
   name: Joi.string(),
   price: Joi.number(),
@@ -51,6 +58,7 @@ export default {
     [BUS_CREATION_SCHEMA]: busCreation,
     [COAL_CREATION_SCHEMA]: coalCreation,
     [PELLET_CREATION_SCHEMA]: pelletCreation,
+    [PELLET_UPDATE_SCHEMA]: pelletUpdate,
     [STONE_CREATION_SCHEMA]: stoneCreation,
     [COAL_UPDATE_SCHEMA]: coalUpdate,
 } as { [key: string]: ObjectSchema };
