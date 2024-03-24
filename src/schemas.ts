@@ -1,6 +1,5 @@
 import Joi, { ObjectSchema } from "joi";
 import { CoalType } from "./database/enums/coal.enum";
-import { StoneDeliveryFormEnum } from "./database/enums/stone.enum";
 
 export const BUS_CREATION_SCHEMA = 'busCreationSchema';
 export const BUS_UPDATE_SCHEMA = 'busUpdateSchema';
@@ -67,7 +66,7 @@ const stoneCreation = Joi.object().keys({
   name: Joi.string(),
   price: Joi.number(),
   granulation: Joi.number(),
-  deliveryForm: Joi.string().valid(...Object.values(StoneDeliveryFormEnum)),
+  deliveryForm: Joi.string(),
   image: Joi.any()
 });
 
@@ -75,8 +74,8 @@ const stoneUpdate = Joi.object().keys({
   name: Joi.string().optional(),
   price: Joi.number().optional(),
   granulation: Joi.number().optional(),
-  deliveryForm: Joi.string().valid(...Object.values(StoneDeliveryFormEnum)).optional(),
-  image: Joi.any()
+  deliveryForm: Joi.string(),
+  image: Joi.any(),
 });
 
 export default {

@@ -1,6 +1,5 @@
 import { Model, Schema, model } from "mongoose";
 import { IStone } from "../../interfaces/stone.interface";
-import { StoneDeliveryFormEnum } from "../enums/stone.enum";
 
 export default interface IStoneModel extends IStone, Document {
     toJsonFor(): any;
@@ -11,7 +10,7 @@ const StomeSchema = new Schema({
     price: Number,
     imageUrl: String,
     granulation: Number,
-    deliveryForm: { type: String, enum: StoneDeliveryFormEnum }
+    deliveryForm: String,
 });
 
 StomeSchema.methods.toJsonFor = function () {
