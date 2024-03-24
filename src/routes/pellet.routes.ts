@@ -35,7 +35,7 @@ router.post(
         });
 
         const savedPellet = await pellet.save();
-        return res.json({ bus: savedPellet.toJsonFor() });
+        return res.json({ pellet: savedPellet.toJsonFor() });
     }
 )
 
