@@ -25,9 +25,9 @@ router.post(
         if(req.file) {
             image = await uploadImage(req.file!.buffer);
         }
-        
 
         const pellet = new Pellet({
+            name: newPellet.name,
             price: newPellet.price,
             imageUrl: image?.secure_url,
             certificates: newPellet.certificates,
@@ -107,6 +107,7 @@ router.patch(
         await Pellet.updateOne({
             _id: id
         }, {
+            name: updatePellet.name,
             price: updatePellet.price,
             imageUrl: image?.secure_url,
             certificates: updatePellet.certificates,
