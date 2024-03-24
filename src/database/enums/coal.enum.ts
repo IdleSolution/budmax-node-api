@@ -1,5 +1,5 @@
 export enum CoalType {
-    CUBE = 'cube',
-    WALNUT = 'walnut',
-    ECO_PEA = 'eco pea',
+    CUBE = 'kostka',
+    WALNUT = 'orzech',
+    ECO_PEA = 'groszek',
 }
