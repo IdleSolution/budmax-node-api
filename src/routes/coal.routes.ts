@@ -63,6 +63,30 @@ router.get(
     }
 )
 
+router.get('/cube', async (req: Request, res: Response) => {
+    const coals = await Coal.find({ type: CoalType.CUBE });
+
+    return res.json({
+        coals: coals.map(coal => coal.toJsonFor()),
+    });
+});
+
+router.get('/walnut', async (req: Request, res: Response) => {
+    const coals = await Coal.find({ type: CoalType.WALNUT });
+
+    return res.json({
+        coals: coals.map(coal => coal.toJsonFor()),
+    });
+});
+
+router.get('/eco', async (req: Request, res: Response) => {
+    const coals = await Coal.find({ type: CoalType.ECO_PEA });
+
+    return res.json({
+        coals: coals.map(coal => coal.toJsonFor()),
+    });
+});
+
 router.get(
     '/:id', 
     async (req: Request<{ id: string }>, res: Response) => {
