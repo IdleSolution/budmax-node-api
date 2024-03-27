@@ -20,7 +20,6 @@ CoalSchema.methods.toJsonFor = function () {
     return {
         id: this._id,
         name: this.name,
-        type: this.type,
         mine: this.mine,
         calorificValue: this.calorificValue,
         granulation: this.granulation,
