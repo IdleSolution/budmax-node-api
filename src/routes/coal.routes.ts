@@ -122,6 +122,13 @@ router.patch(
 
         let image = undefined;
 
+        let translatedType;
+
+        if(updatedCoal.type) {
+            translatedType = CoalTypeTranslations[updatedCoal.type];
+        }
+
+
         if(req.file) {
             image = await uploadImage(req.file!.buffer);
         }
@@ -130,7 +137,7 @@ router.patch(
             _id: id
         }, {
             name: updatedCoal.name,
-            type: updatedCoal.type,
+            type: translatedType,
             price: updatedCoal.price ? Number(updatedCoal.price) : undefined,
             calorificValue: updatedCoal.calorificValue ? Number(updatedCoal.calorificValue) : undefined,
             granulation: updatedCoal.granulation ? Number(updatedCoal.granulation) : undefined,
