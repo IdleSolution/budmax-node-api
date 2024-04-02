@@ -8,6 +8,7 @@ import swaggerDocument from './swagger-output.json';
 import cors from 'cors';
 
 import './database';
+import rateLimit from 'express-rate-limit';
 
 const app: express.Application = express();
 
@@ -17,6 +18,15 @@ app.use(cors());
 app.get('/', (req: Request, res: Response) => {
     return res.json({ health: 'check' });
 })
+
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	limit: 150,
+	standardHeaders: 'draft-7',
+	legacyHeaders: false,
+})
+
+app.use(limiter)
 
 app.use('/api', MainRouter);
 
