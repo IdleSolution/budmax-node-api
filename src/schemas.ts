@@ -1,5 +1,5 @@
 import Joi, { ObjectSchema } from "joi";
-import { CoalType } from "./database/enums/coal.enum";
+import { CoalType, CoalTypePolish } from "./database/enums/coal.enum";
 
 export const BUS_CREATION_SCHEMA = 'busCreationSchema';
 export const BUS_UPDATE_SCHEMA = 'busUpdateSchema';
@@ -38,7 +38,7 @@ const coalCreation = Joi.object().keys({
 
 const coalUpdate = Joi.object().keys({
   name: Joi.string(),
-  type: Joi.string().valid(...Object.values(CoalType)).optional(),
+  type: Joi.string().valid(...Object.values(CoalTypePolish)).optional(),
   mine: Joi.string().optional(),
   calorificValue: Joi.string().optional(),
   granulation: Joi.string().optional(),

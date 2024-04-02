@@ -6,7 +6,7 @@ import multer from 'multer';
 import { uploadImage } from '../utilities/upload-image';
 import { ICoal, ICoalListQueryParams } from '../interfaces/coal.interface';
 import { Coal } from '../database/models/coal.model';
-import { CoalType } from '../database/enums/coal.enum';
+import { CoalType, CoalTypeTranslations } from '../database/enums/coal.enum';
 
 const router: Router = Router();
 
@@ -26,10 +26,11 @@ router.post(
         if(req.file) {
             image = await uploadImage(req.file!.buffer);
         }
-        
 
+        const translatedType = CoalTypeTranslations[newCoal.type];
+        
         const coal = new Coal({
-            type: newCoal.type,
+            type: translatedType,
             name: newCoal.name,
             price: Number(newCoal.price),
             calorificValue: Number(newCoal.calorificValue),

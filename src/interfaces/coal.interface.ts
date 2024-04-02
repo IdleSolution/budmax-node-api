@@ -1,8 +1,8 @@
-import { CoalType } from "../database/enums/coal.enum";
+import { CoalType, CoalTypePolish } from "../database/enums/coal.enum";
 
 export interface ICoal {
     name: string,
-    type: CoalType,
+    type: CoalTypePolish,
     mine: string,
     calorificValue: number,
     granulation: number,
