@@ -197,11 +197,12 @@ router.post('/notification', async (req: Request<{}, {}, PayuPaymentNotification
             console.log('Wrong signature!');
             return res.status(400).json({ success: false });
         }
+
+        console.log(extOrderId);
         
         await Bus.findOneAndUpdate(
             { 'rents.payment.orderId': extOrderId },
-            { $set: { 'rents.$[elem].paid': true } },
-            { arrayFilters: [{ 'elem.payment.orderId': extOrderId }] }
+            { $set: { 'rents.$.payment.paid': true } },
         );
 
         console.log('Payment processed correctly!');
