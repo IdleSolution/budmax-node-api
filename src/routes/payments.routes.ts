@@ -166,15 +166,25 @@ router.post(
                 }
             });
     
-            return res.json({ url: order.redirectUri });
+            return res.json({ url: order.redirectUri, payuOrderId: order.orderId });
         } catch(e) {
             return res.status(500).json(e);
         }
     }
 )
 
+router.get('/check/:id', async (req: Request<{ id: string }>, res: Response) => {
+    const payuOrderId = req.params.id;
+
+    const result = await Bus.findOne(
+        { "rents.payment.payuOrderId": payuOrderId },
+        { "rents.$": 1 },
+    )
+
+    return res.json({ processed: result?.rents[0].payment.paid ?? false });
+})
+
 router.post('/notification', async (req: Request<{}, {}, PayuPaymentNotification>, res: Response) => {
-    console.log('Getting notification...');
     const { status, extOrderId } = req.body.order;
     if(status === 'COMPLETED') {
         const signatureString = req.headers['openpayu-signature'] as string;
@@ -198,8 +208,6 @@ router.post('/notification', async (req: Request<{}, {}, PayuPaymentNotification
             return res.status(400).json({ success: false });
         }
 
-        console.log(extOrderId);
-        
         await Bus.findOneAndUpdate(
             { 'rents.payment.orderId': extOrderId },
             { $set: { 'rents.$.payment.paid': true } },
