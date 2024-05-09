@@ -196,7 +196,9 @@ router.post('/notification', async (req: Request<{}, {}, PayuPaymentNotification
         console.log(expectedSignature);
         console.log(signatureString);
         console.log('--------------');
-        console.log(req.body);
+        console.log(JSON.stringify(req.body));
+        console.log('-----------------------------');
+        console.log(JSON.stringify(req.body) + PAYU_MD5_KEY);
 
         if(expectedSignature !== signature) {
             console.log('Wrong signature!');
