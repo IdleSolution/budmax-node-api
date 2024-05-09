@@ -32,3 +32,8 @@ export interface BusCreationInterface {
     pricePerDay: number,
     power: number,
 }
+
+export interface IBusSearchQueryParams {
+    start: string;
+    end: string;
+}

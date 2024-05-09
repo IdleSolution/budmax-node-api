@@ -1,11 +1,13 @@
 import { Request, Response, Router } from 'express';
-import { BusCreationInterface, IBus } from '../interfaces/bus.interface';
-import { Bus } from '../database/models/bus.model';
+import { BusCreationInterface, IBus, IBusSearchQueryParams } from '../interfaces/bus.interface';
+import IBusModel, { Bus } from '../database/models/bus.model';
 import schemaValidator from '../middlewares/schema-validator.middleware';
 import { BUS_CREATION_SCHEMA, BUS_UPDATE_SCHEMA } from '../schemas';
 import { verifyToken } from '../middlewares/verify-jwt-token.middleware';
 import multer from 'multer';
 import { uploadImage } from '../utilities/upload-image';
+import { checkDateIntersection } from '../utilities/date-intersection';
+import { Document, Types } from 'mongoose';
 
 const router: Router = Router();
 
@@ -46,6 +48,42 @@ router.get(
 
         return res.json({
             buses: buses.map(bus => bus.toJsonFor()),
+        });
+    }
+)
+
+router.get(
+    '/search', 
+    async (req: Request<{}, {}, {}, IBusSearchQueryParams>, res: Response) => {
+        const { start, end } = req.query;
+
+        const buses = await Bus.find();
+
+        const busesToReturn: (Document<unknown, {}, IBusModel> & IBusModel & { _id: Types.ObjectId; })[] = [];
+
+        buses.forEach(bus => {
+            let intersected = false;
+            bus.rents.forEach(rent => {
+                const differenceMs = Date.now() - rent.createdAt.getTime();
+    
+                const oneHourMs = 60 * 60 * 1000;
+    
+                const intersection = checkDateIntersection({ startDate: new Date(Number(start)), endDate: new Date(Number(end)) }, 
+                    { startDate: rent.startDate, endDate: rent.endDate }
+                );
+    
+                if((differenceMs < oneHourMs && !rent.payment.paid) && intersection) {
+                    intersected = true;
+                }
+             })
+
+             if(!intersected) {
+                busesToReturn.push(bus);
+             }
+        })
+
+        return res.json({
+            buses: busesToReturn.map(bus => bus.toJsonFor()),
         });
     }
 )
