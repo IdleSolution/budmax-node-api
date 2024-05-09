@@ -188,19 +188,11 @@ router.post('/notification', async (req: Request<{}, {}, PayuPaymentNotification
             return res.status(400).json({ success: false });
         }
 
+        String(req.body)
+
         const concatenated = JSON.stringify(req.body) + PAYU_MD5_KEY;
 
         const expectedSignature = md5(concatenated);
-
-        console.log(`Signature from payu: ${signature}`);
-        console.log(`Created signature: ${expectedSignature}`);
-        console.log(req.body);
-        console.log('Stringified body:');
-        console.log(JSON.stringify(req.body));
-        console.log('Stringify + md5:');
-        console.log(JSON.stringify(req.body) + PAYU_MD5_KEY);
-        console.log(req.body.order.notifyUrl);
-
 
         if(expectedSignature !== signature) {
             console.log('Wrong signature!');
