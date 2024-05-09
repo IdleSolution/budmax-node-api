@@ -188,7 +188,7 @@ router.post('/notification', async (req: Request<{}, {}, PayuPaymentNotification
             return res.status(400).json({ success: false });
         }
 
-        const concatenated = req.body + PAYU_MD5_KEY;
+        const concatenated = JSON.stringify(req.body) + PAYU_MD5_KEY;
 
         const expectedSignature = md5(concatenated);
 
