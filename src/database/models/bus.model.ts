@@ -44,7 +44,4 @@ BusSchema.methods.toJsonFor = function () {
     }
 }
 
-BusSchema.index({createdAt: 1},{expireAfterSeconds: 24*60*60,partialFilterExpression : {paid: false}});
-
-
 export const Bus: Model<IBusModel> = model<IBusModel>('Bus', BusSchema);
