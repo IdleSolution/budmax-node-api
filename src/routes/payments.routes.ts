@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Bus } from "../database/models/bus.model";
-import { BusReservationCreationInterface, PayuOrderCreateResponse, ReservationPayuOrderInterface } from "../interfaces/payments.interface";
+import { BusReservationCreationInterface, PayuOrderCreateResponse, PayuPaymentNotification, ReservationPayuOrderInterface } from "../interfaces/payments.interface";
 import { Request, Response, Router } from 'express';
 import { formatDate } from "../utilities/format-date";
 import { countDays } from "../utilities/count-days";
@@ -8,6 +8,7 @@ import { checkDateIntersection } from "../utilities/date-intersection";
 import { MERCHANT_POS_ID, PAYU_CLIENT_ID, PAYU_CLIENT_SECRET } from "../utilities/secrets";
 import schemaValidator from "../middlewares/schema-validator.middleware";
 import { RESERVATION_CREATION_SCHEMA } from "../schemas";
+import { v4 as uuidv4 } from 'uuid';
 
 const router: Router = Router();
 
@@ -41,8 +42,10 @@ const createPayuOrder = async (orderInfo: ReservationPayuOrderInterface): Promis
             customerIp: orderInfo.ip,
             merchantPosId: MERCHANT_POS_ID,
             description: `Rezerwacja auta w czasie: ${formatDate(orderInfo.startDate)} - ${formatDate(orderInfo.endDate)}`,
+            notifyUrl: 'budmax-node-api-production.up.railway.app/api/payment/notification',
             currencyCode: 'PLN',
             totalAmount: orderInfo.totalAmount,
+            extOrderId: orderInfo.orderId,
             buyer: {
                 email: orderInfo.customer.email,
                 phone: orderInfo.customer.phone,
@@ -115,12 +118,15 @@ router.post(
     
     
             const totalAmount = bus.pricePerDay * ADVANCE_PAYMENT_PERCENTAGE * countDays(startRentDate, endRentDate);
+
+            const orderId = uuidv4();
     
             const order = await createPayuOrder({
                 ip: req.ip || req.connection.remoteAddress || '127.0.0.1',
                 totalAmount: String(totalAmount),
                 startDate: startRentDate,
                 endDate: endRentDate,
+                orderId,
                 product: {
                     name: bus.model,
                     unitPrice: String(totalAmount),
@@ -141,7 +147,8 @@ router.post(
                         endDate: endRentDate,
                         createdAt: new Date(),
                         payment: {
-                            orderId: order.orderId,
+                            orderId,
+                            payuOrderId: order.orderId,
                             totalAmount,
                             paid: false,
                             currencyCode: 'PLN',
@@ -164,5 +171,12 @@ router.post(
         }
     }
 )
+
+router.post('/notification', (req: Request<{}, {}, PayuPaymentNotification>, res: Response) => {
+    console.log(req.body);
+    console.log(req.headers);
+
+    return res.status(200).json({ success: true });
+})
 
 export const PaymentRoutes: Router = router;

@@ -10,6 +10,7 @@ export interface IBus {
         createdAt: Date,
         payment: {
             orderId: string,
+            payuOrderId: string,
             totalAmount: number,
             paid: boolean,
             currencyCode: string,

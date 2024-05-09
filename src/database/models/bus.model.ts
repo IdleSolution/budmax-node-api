@@ -25,6 +25,7 @@ const BusSchema = new Schema({
         },
         payment: {
             orderId: String,
+            payuOrderId: String,
             totalAmount: Number,
             paid: Boolean,
             currencyCode: String,

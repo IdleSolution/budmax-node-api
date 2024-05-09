@@ -14,6 +14,7 @@ export interface ReservationPayuOrderInterface {
     totalAmount: string;
     startDate: Date;
     endDate: Date;
+    orderId: string;
     product: {
         name: string;
         unitPrice: string;
@@ -33,4 +34,12 @@ export interface PayuOrderCreateResponse {
     },
     redirectUri: string,
     orderId: string,
+}
+
+export interface PayuPaymentNotification {
+    order: {
+        orderId: string;
+        extOrderId: string;
+        status: 'COMPLETED' | 'PENDING' | 'WAITING_FOR_CONFIRMATION' | 'CANCELED',
+    },
 }
