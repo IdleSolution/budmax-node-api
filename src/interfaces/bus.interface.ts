@@ -4,6 +4,26 @@ export interface IBus {
     pricePerDay: number,
     power: number,
     imageUrl: string;
+    rents: [{
+        startDate: Date,
+        endDate: Date,
+        createdAt: Date,
+        payment: {
+            orderId: string,
+            totalAmount: number,
+            paid: boolean,
+            currencyCode: string,
+            posId: number,
+            description: string,
+            customer: {
+                ip: string,
+                email: string,
+                firstName: string,
+                lastName: string,
+                phoneNumber: string,
+            }
+        }
+    }]
 }
 
 export interface BusCreationInterface {

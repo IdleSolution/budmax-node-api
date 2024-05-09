@@ -15,10 +15,20 @@ const BusSchema = new Schema({
     rents: [{
         startDate: Date,
         endDate: Date,
+        createdAt: Date,
+        customer: {
+            ip: String,
+            email: String,
+            firstName: String,
+            lastName: String,
+            phoneNumber: String,
+        },
         payment: {
             orderId: String,
-            fullCost: Number,
-            fullyPaid: Boolean,
+            totalAmount: Number,
+            paid: Boolean,
+            currencyCode: String,
+            posId: Number,
         }
     }]
 })
@@ -33,5 +43,8 @@ BusSchema.methods.toJsonFor = function () {
         imageUrl: this.imageUrl,
     }
 }
+
+BusSchema.index({createdAt: 1},{expireAfterSeconds: 24*60*60,partialFilterExpression : {paid: false}});
+
 
 export const Bus: Model<IBusModel> = model<IBusModel>('Bus', BusSchema);

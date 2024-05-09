@@ -18,3 +18,6 @@ export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
 export const CLOUDINARY_NAME = process.env.CLOUDINARY_NAME!;
 export const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY!;
 export const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET!;
+export const PAYU_CLIENT_ID = process.env.PAYU_CLIENT_ID!;
+export const PAYU_CLIENT_SECRET = process.env.PAYU_CLIENT_SECRET!;
+export const MERCHANT_POS_ID = process.env.MERCHANT_POS_ID!;
