@@ -174,6 +174,7 @@ router.post(
 )
 
 router.post('/notification', async (req: Request<{}, {}, PayuPaymentNotification>, res: Response) => {
+    console.log('Getting notification...');
     const { status, extOrderId } = req.body.order;
     if(status === 'COMPLETED') {
         const signatureString = req.headers['openpayu-signature'] as string;
@@ -187,8 +188,6 @@ router.post('/notification', async (req: Request<{}, {}, PayuPaymentNotification
             console.log('Missing signature!');
             return res.status(400).json({ success: false });
         }
-
-        String(req.body)
 
         const concatenated = JSON.stringify(req.body) + PAYU_MD5_KEY;
 
