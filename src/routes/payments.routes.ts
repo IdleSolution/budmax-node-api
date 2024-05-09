@@ -192,6 +192,10 @@ router.post('/notification', async (req: Request<{}, {}, PayuPaymentNotification
 
         const expectedSignature = md5(concatenated);
 
+        console.log(signature);
+        console.log(expectedSignature);
+        console.log(signatureString);
+
         if(expectedSignature !== signature) {
             console.log('Wrong signature!');
             return res.status(400).json({ success: false });
