@@ -6,6 +6,8 @@ import { formatDate } from "../utilities/format-date";
 import { countDays } from "../utilities/count-days";
 import { checkDateIntersection } from "../utilities/date-intersection";
 import { MERCHANT_POS_ID, PAYU_CLIENT_ID, PAYU_CLIENT_SECRET } from "../utilities/secrets";
+import schemaValidator from "../middlewares/schema-validator.middleware";
+import { RESERVATION_CREATION_SCHEMA } from "../schemas";
 
 const router: Router = Router();
 
@@ -77,6 +79,7 @@ const createPayuOrder = async (orderInfo: ReservationPayuOrderInterface): Promis
 
 router.post(
     '/reservation/:id',
+    schemaValidator(RESERVATION_CREATION_SCHEMA),
     async (req: Request<{ id: string }, {}, BusReservationCreationInterface>, res: Response) => {
         try {
             const newOrder = req.body;
