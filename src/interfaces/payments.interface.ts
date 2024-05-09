@@ -41,5 +41,6 @@ export interface PayuPaymentNotification {
         orderId: string;
         extOrderId: string;
         status: 'COMPLETED' | 'PENDING' | 'WAITING_FOR_CONFIRMATION' | 'CANCELED',
+        notifyUrl: string;
     },
 }
