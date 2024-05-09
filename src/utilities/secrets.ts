@@ -21,3 +21,4 @@ export const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET!;
 export const PAYU_CLIENT_ID = process.env.PAYU_CLIENT_ID!;
 export const PAYU_CLIENT_SECRET = process.env.PAYU_CLIENT_SECRET!;
 export const MERCHANT_POS_ID = process.env.MERCHANT_POS_ID!;
+export const PAYU_MD5_KEY = process.env.PAYU_MD5_KEY!;

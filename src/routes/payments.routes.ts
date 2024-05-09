@@ -5,10 +5,11 @@ import { Request, Response, Router } from 'express';
 import { formatDate } from "../utilities/format-date";
 import { countDays } from "../utilities/count-days";
 import { checkDateIntersection } from "../utilities/date-intersection";
-import { MERCHANT_POS_ID, PAYU_CLIENT_ID, PAYU_CLIENT_SECRET } from "../utilities/secrets";
+import { MERCHANT_POS_ID, PAYU_CLIENT_ID, PAYU_CLIENT_SECRET, PAYU_MD5_KEY } from "../utilities/secrets";
 import schemaValidator from "../middlewares/schema-validator.middleware";
 import { RESERVATION_CREATION_SCHEMA } from "../schemas";
 import { v4 as uuidv4 } from 'uuid';
+import md5 from 'md5';
 
 const router: Router = Router();
 
@@ -42,7 +43,7 @@ const createPayuOrder = async (orderInfo: ReservationPayuOrderInterface): Promis
             customerIp: orderInfo.ip,
             merchantPosId: MERCHANT_POS_ID,
             description: `Rezerwacja auta w czasie: ${formatDate(orderInfo.startDate)} - ${formatDate(orderInfo.endDate)}`,
-            notifyUrl: 'budmax-node-api-production.up.railway.app/api/payment/notification',
+            notifyUrl: 'https://budmax-node-api-production.up.railway.app/api/payment/notification',
             currencyCode: 'PLN',
             totalAmount: orderInfo.totalAmount,
             extOrderId: orderInfo.orderId,
@@ -172,9 +173,39 @@ router.post(
     }
 )
 
-router.post('/notification', (req: Request<{}, {}, PayuPaymentNotification>, res: Response) => {
-    console.log(req.body);
-    console.log(req.headers);
+router.post('/notification', async (req: Request<{}, {}, PayuPaymentNotification>, res: Response) => {
+    const { status, extOrderId } = req.body.order;
+    if(status === 'COMPLETED') {
+        const signatureString = req.headers['openpayu-signature'] as string;
+        if(!signatureString) {
+            console.log('Missing signature!');
+            return res.status(400).json({ success: false });
+        }
+
+        const signature = signatureString.split(';')[1]?.split('=')[1];
+        if(!signature) {
+            console.log('Missing signature!');
+            return res.status(400).json({ success: false });
+        }
+
+        const concatenated = req.body + PAYU_MD5_KEY;
+
+        const expectedSignature = md5(concatenated);
+
+        if(expectedSignature !== signature) {
+            console.log('Wrong signature!');
+            return res.status(400).json({ success: false });
+        }
+        
+        await Bus.findOneAndUpdate(
+            { 'rents.payment.orderId': extOrderId },
+            { $set: { 'rents.$[elem].paid': true } },
+            { arrayFilters: [{ 'elem.payment.orderId': extOrderId }] }
+        );
+
+        console.log('Payment processed correctly!');
+
+    }
 
     return res.status(200).json({ success: true });
 })
