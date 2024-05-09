@@ -195,8 +195,8 @@ router.post('/notification', async (req: Request<{}, {}, PayuPaymentNotification
         console.log(signature);
         console.log(expectedSignature);
         console.log(signatureString);
+        console.log('--------------');
         console.log(req.body);
-        console.log(JSON.stringify(req.body));
 
         if(expectedSignature !== signature) {
             console.log('Wrong signature!');
