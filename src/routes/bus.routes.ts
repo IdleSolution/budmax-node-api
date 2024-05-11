@@ -8,6 +8,8 @@ import multer from 'multer';
 import { uploadImage } from '../utilities/upload-image';
 import { checkDateIntersection } from '../utilities/date-intersection';
 import { Document, Types } from 'mongoose';
+import { countDays } from '../utilities/count-days';
+import { ADVANCE_PAYMENT_PERCENTAGE } from './payments.routes';
 
 const router: Router = Router();
 
@@ -83,7 +85,12 @@ router.get(
         })
 
         return res.json({
-            buses: busesToReturn.map(bus => bus.toJsonFor()),
+            buses: busesToReturn.map(bus => {
+                return {
+                    ...bus.toJsonFor(),
+                    totalAmountToPay: bus.pricePerDay * ADVANCE_PAYMENT_PERCENTAGE * countDays(new Date(Number(start)), new Date(Number(end))),
+                }
+            }),
         });
     }
 )
@@ -148,6 +155,7 @@ router.patch(
             power: updatedBus.power,
             engineCapacity: updatedBus.engineCapacity,
             pricePerDay: updatedBus.pricePerDay,
+            
             imageUrl: image?.secure_url,
         });
 

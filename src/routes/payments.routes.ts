@@ -14,7 +14,7 @@ import md5 from 'md5';
 const router: Router = Router();
 
 const PAYU_URL = 'https://secure.snd.payu.com';
-const ADVANCE_PAYMENT_PERCENTAGE = 0.15;
+export const ADVANCE_PAYMENT_PERCENTAGE = 0.15;
 
 const getPayuBearerToken = async (): Promise<string> => {
     try {
