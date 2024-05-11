@@ -71,8 +71,8 @@ router.get(
                 const intersection = checkDateIntersection({ startDate: new Date(Number(start)), endDate: new Date(Number(end)) }, 
                     { startDate: rent.startDate, endDate: rent.endDate }
                 );
-    
-                if((differenceMs < oneHourMs && !rent.payment.paid) && intersection) {
+
+                if((rent.payment.paid || (differenceMs < oneHourMs && !rent.payment.paid)) && intersection) {
                     intersected = true;
                 }
              })

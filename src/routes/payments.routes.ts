@@ -112,7 +112,7 @@ router.post(
                     { startDate: rent.startDate, endDate: rent.endDate }
                 );
     
-                if((differenceMs < oneHourMs && !rent.payment.paid) && intersection) {
+                if((rent.payment.paid || (differenceMs < oneHourMs && !rent.payment.paid)) && intersection) {
                     return res.status(404).json({ error: 'The given dates are not available for reservation!' });
                 }
              })
