@@ -44,6 +44,7 @@ const createPayuOrder = async (orderInfo: ReservationPayuOrderInterface): Promis
             merchantPosId: MERCHANT_POS_ID,
             description: `Rezerwacja auta w czasie: ${formatDate(orderInfo.startDate)} - ${formatDate(orderInfo.endDate)}`,
             notifyUrl: 'https://budmax-node-api-production.up.railway.app/api/payment/notification',
+            continueUrl: `https://budmax-zwolen.pl/platnosc?paymentId=${orderInfo.orderId}`,
             currencyCode: 'PLN',
             totalAmount: orderInfo.totalAmount,
             extOrderId: orderInfo.orderId,
@@ -174,10 +175,10 @@ router.post(
 )
 
 router.get('/check/:id', async (req: Request<{ id: string }>, res: Response) => {
-    const payuOrderId = req.params.id;
+    const orderId = req.params.id;
 
     const result = await Bus.findOne(
-        { "rents.payment.payuOrderId": payuOrderId },
+        { "rents.payment.orderId": orderId },
         { "rents.$": 1 },
     )
 
