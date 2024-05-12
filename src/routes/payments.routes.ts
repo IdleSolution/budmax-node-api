@@ -254,9 +254,9 @@ const sendEmail = async (email: string, modelName: string, paidAdvance: number, 
             subject: 'Potwierdzenie rezerwacji w Budmax',
             html: `
                 <h1>Dziękujemy za rezerwacje na stronie budmax-zwolen.pl!</h1><br>
-                <p><b>Model:</b>${modelName}</p>
-                <p><b>Zapłacona zaliczka</b>: ${paidAdvance} PLN</p>
-                <p><b>Całość do zapłaty</b>: ${totalAmountToPay} PLN</p><br>
+                <p><b>Model:</b> ${modelName}</p>
+                <p><b>Zapłacona zaliczka:</b> ${paidAdvance} PLN</p>
+                <p><b>Całość do zapłaty:</b> ${totalAmountToPay} PLN</p><br>
                 <h2>Pozdrawiamy!</h2>
             `
         });
