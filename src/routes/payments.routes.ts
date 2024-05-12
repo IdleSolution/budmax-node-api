@@ -5,7 +5,7 @@ import { Request, Response, Router } from 'express';
 import { formatDate } from "../utilities/format-date";
 import { countDays } from "../utilities/count-days";
 import { checkDateIntersection } from "../utilities/date-intersection";
-import { MERCHANT_POS_ID, PAYU_CLIENT_ID, PAYU_CLIENT_SECRET, PAYU_MD5_KEY } from "../utilities/secrets";
+import { GMAIL_STP_PASSWORD, MERCHANT_POS_ID, PAYU_CLIENT_ID, PAYU_CLIENT_SECRET, PAYU_MD5_KEY } from "../utilities/secrets";
 import schemaValidator from "../middlewares/schema-validator.middleware";
 import { RESERVATION_CREATION_SCHEMA } from "../schemas";
 import { v4 as uuidv4 } from 'uuid';
@@ -244,7 +244,7 @@ const sendEmail = async (email: string, modelName: string, paidAdvance: number, 
             secure: true,
             auth: {
                 user: 'stranweb@gmail.com',
-                pass: 'mgms xuzj dvef sjaq',
+                pass: GMAIL_STP_PASSWORD,
             }
         });
 
