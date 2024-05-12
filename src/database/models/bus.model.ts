@@ -16,6 +16,7 @@ const BusSchema = new Schema({
         startDate: Date,
         endDate: Date,
         createdAt: Date,
+        confirmationEmailSent: Boolean,
         customer: {
             ip: String,
             email: String,

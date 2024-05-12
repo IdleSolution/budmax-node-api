@@ -3,11 +3,19 @@ export interface IBus {
     engineCapacity: number,
     pricePerDay: number,
     power: number,
-    imageUrl: string;
+    imageUrl: string,
     rents: [{
         startDate: Date,
         endDate: Date,
         createdAt: Date,
+        confirmationEmailSent: boolean,
+        customer: {
+            ip: string,
+            email: string,
+            firstName: string,
+            lastName: string,
+            phoneNumber: string,
+        }
         payment: {
             orderId: string,
             payuOrderId: string,
@@ -16,13 +24,6 @@ export interface IBus {
             currencyCode: string,
             posId: number,
             description: string,
-            customer: {
-                ip: string,
-                email: string,
-                firstName: string,
-                lastName: string,
-                phoneNumber: string,
-            }
         }
     }]
 }

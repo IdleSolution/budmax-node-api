@@ -10,6 +10,7 @@ import schemaValidator from "../middlewares/schema-validator.middleware";
 import { RESERVATION_CREATION_SCHEMA } from "../schemas";
 import { v4 as uuidv4 } from 'uuid';
 import md5 from 'md5';
+import nodemailer from 'nodemailer';
 
 const router: Router = Router();
 
@@ -148,6 +149,7 @@ router.post(
                         startDate: startRentDate,
                         endDate: endRentDate,
                         createdAt: new Date(),
+                        confirmationEmailSent: false,
                         payment: {
                             orderId,
                             payuOrderId: order.orderId,
@@ -209,16 +211,60 @@ router.post('/notification', async (req: Request<{}, {}, PayuPaymentNotification
             return res.status(400).json({ success: false });
         }
 
-        await Bus.findOneAndUpdate(
+        const bus = await Bus.findOneAndUpdate(
             { 'rents.payment.orderId': extOrderId },
             { $set: { 'rents.$.payment.paid': true } },
         );
 
-        console.log('Payment processed correctly!');
+        const rent = bus?.rents.find(x => x.payment.orderId === extOrderId);
 
+        const days = countDays(rent!.startDate, rent!.endDate);
+
+
+        if(!rent!.confirmationEmailSent) {
+            console.log('Sending email...')
+            sendEmail(rent!.customer.email, bus!.model, rent!.payment.totalAmount, bus!.pricePerDay * days)
+            await Bus.findOneAndUpdate(
+                { 'rents.payment.orderId': extOrderId },
+                { $set: { 'rents.$.confirmationEmailSent': true } },
+            );
+        }
+
+        console.log('Payment processed correctly!');
     }
 
     return res.status(200).json({ success: true });
 })
+
+const sendEmail = async (email: string, modelName: string, paidAdvance: number, totalAmountToPay: number) => {
+    try {
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+                user: 'stranweb@gmail.com',
+                pass: 'mgms xuzj dvef sjaq',
+            }
+        });
+
+    
+        await transporter.sendMail({
+            to: email,
+            subject: 'Potwierdzenie rezerwacji w Budmax',
+            html: `
+                <h1>Dziękujemy za rezerwacje na stronie budmax-zwolen.pl!</h1><br>
+                <p><b>Model:</b>${modelName}</p><br>
+                <p><b>Zapłacona zaliczka</b>: ${paidAdvance}</p><br>
+                <p><b>Całość do zapłaty</b>: ${totalAmountToPay}</p>
+                <h2>Pozdrawiamy!</h2>
+            `
+        });
+
+    } catch(e) {
+        console.log(e);
+    }
+
+}
 
 export const PaymentRoutes: Router = router;
