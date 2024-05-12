@@ -223,7 +223,7 @@ router.post('/notification', async (req: Request<{}, {}, PayuPaymentNotification
 
         if(!rent!.confirmationEmailSent) {
             console.log('Sending email...')
-            sendEmail(rent!.customer.email, bus!.model, rent!.payment.totalAmount, bus!.pricePerDay * days)
+            sendEmail(rent!.customer.email, bus!.model, rent!.payment.totalAmount, bus!.pricePerDay * days, rent!.startDate, rent!.endDate)
             await Bus.findOneAndUpdate(
                 { 'rents.payment.orderId': extOrderId },
                 { $set: { 'rents.$.confirmationEmailSent': true } },
@@ -236,7 +236,7 @@ router.post('/notification', async (req: Request<{}, {}, PayuPaymentNotification
     return res.status(200).json({ success: true });
 })
 
-const sendEmail = async (email: string, modelName: string, paidAdvance: number, totalAmountToPay: number) => {
+const sendEmail = async (email: string, modelName: string, paidAdvance: number, totalAmountToPay: number, startDate: Date, endDate: Date) => {
     try {
         const transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
@@ -248,15 +248,24 @@ const sendEmail = async (email: string, modelName: string, paidAdvance: number, 
             }
         });
 
+        const formattedStartDate = startDate.toISOString().split('T')[0];
+        const formattedEndDate = endDate.toISOString().split('T')[0];
     
         await transporter.sendMail({
             to: email,
             subject: 'Potwierdzenie rezerwacji w Budmax',
             html: `
-                <h1>Dziękujemy za rezerwacje na stronie budmax-zwolen.pl!</h1><br>
+                <h1>Dziękujemy za rezerwację na stronie budmax-zwolen.pl!</h1><br>
                 <p><b>Model:</b> ${modelName}</p>
+                <p><b>Data rezerwacji:</b> ${formattedStartDate} - ${formattedEndDate}</p>
                 <p><b>Zapłacona zaliczka:</b> ${paidAdvance} PLN</p>
                 <p><b>Całość do zapłaty:</b> ${totalAmountToPay} PLN</p><br>
+                <p>Auto będzie czekało w określonej dacie przy rezerwacji pod adresem:</p><br>
+                <div>
+                  <p>26-700 Zwoleń</p>
+                  <p>ulica Marii Konopnickiej 2</p>
+                </div><br>
+                <p>W razie jakichkolwiek pytań zapraszam do kontaktu: 795 348 414</p><br>
                 <h2>Pozdrawiamy!</h2>
             `
         });
